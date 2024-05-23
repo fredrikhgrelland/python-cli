@@ -25,15 +25,24 @@ def weather(
         default=Provider.wttr,
         case_sensitive=False,
     ),
+    hours: int = typer.Option(help="The number of hours to get the forecast for", default=1),
+    plot: bool = typer.Option(help="Plot the weather forecast", default=False),
 ):
     if city is None:
         city = typer.prompt("Which city's weather do you want to know?", default="Oslo")
 
     if provider == "wttr":
         import python_cli.lib.weather.wttr as wttr
-
+        if hours > 1:
+            typer.Exit(message="The wttr provider does not support multi-hour forecasts.")
+        if plot:
+            typer.Exit(message="The wttr provider does not support multi-hour forecasts, so plotting is disabled")
         typer.echo(wttr.get_weather(city))
     elif provider == "yr":
         import python_cli.lib.weather.yr as yr
-
-        typer.echo(yr.get_weather(city))
+        if plot:
+            from python_cli.lib.weather.plotter import plot_forecast
+            forecast = yr.get_weather(city, hours=hours, return_json=True)
+            plot_forecast(location=city,times=forecast["times"], temperatures=forecast["temperatures"])
+        else:
+            typer.echo(yr.get_weather(city, hours=hours))

@@ -55,7 +55,19 @@ def get_coordinates(location: str, search_type:str = "searchJSON"):
     raise ValueError(f"Could not find coordinates for {location}")
 
 
-def get_weather(location: str):
+def get_weather(location: str, hours: int = 1, return_json: bool = False):
     lat, lon = get_coordinates(location)
     forecast = location_forecast(lat, lon)
-    return forecast['properties']['timeseries'][0]['data']['instant']['details']['air_temperature']
+    timeseries = forecast['properties']['timeseries']
+    entries = timeseries[:hours]
+    times = [entry['time'] for entry in entries]
+    temperatures = [entry['data']['instant']['details']['air_temperature'] for entry in entries]  
+    if return_json:
+        return {
+            "times": times,
+            "temperatures": temperatures
+        }
+    _output = f"Weather forecast for {location}:\n"
+    for time, temp in zip(times, temperatures):
+        _output += f"At {time}, the temperature is {temp}°C.\n"
+    return _output
