@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cli_max"
+name = "cli"
 version = "0.1.0"
 description = "This is a demo cli application"
 authors = ["Fredrik Hoem Grelland <fhg@aztek.no>"]
@@ -9,13 +9,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 typer = "^0.12.3"
-rich = "^13.7.1"
-requests = "^2.32.1"
-plotext = "^5.2.8"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-cli-max = 'cli_max.cli:app'
+cli = 'python_cli.cli:app'
