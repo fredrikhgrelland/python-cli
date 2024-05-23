@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cli"
+name = "python_cli"
 version = "0.1.0"
 description = "This is a demo cli application"
 authors = ["Fredrik Hoem Grelland <fhg@aztek.no>"]
